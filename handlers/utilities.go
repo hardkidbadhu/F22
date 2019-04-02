@@ -1,25 +1,43 @@
 package handlers
 
 import (
+	"bytes"
 	"encoding/json"
-	"io"
-	"io/ioutil"
+	"fmt"
+	"html/template"
+	"log"
 	"net/http"
+	"path/filepath"
 
-	"F22/err"
+	"F22/config"
 )
 
-func parseJson(params io.ReadCloser, data interface{}) (bool, error) {
-	b, _ := ioutil.ReadAll(params)
-	error := json.Unmarshal(b, data)
-	if error == nil {
-		return true, nil
+
+func renderTemplate(w http.ResponseWriter, cfg *config.Config, fileName string, arg map[string]interface{}) {
+	htmlStr := LoadTemplate(cfg, fileName, arg)
+	fmt.Fprint(w, htmlStr)
+}
+
+func LoadTemplate(cfg *config.Config, templatePath string, args map[string]interface{}) (templateString string) {
+
+	_, templateName := filepath.Split(templatePath)
+
+	temp, err := template.New(templateName).Delims(cfg.DelimsL, cfg.DelimsR).ParseFiles(templatePath)
+	if err != nil {
+		log.Println("Error in parse files:", err.Error())
+		return
 	}
-	return false, err.UIError{
-		error,
-		"Error in parsing JSON!.",
-		http.StatusBadRequest,
+
+	b := bytes.Buffer{}
+
+	err = temp.Delims(cfg.DelimsL, cfg.DelimsR).Execute(&b, args)
+	if err != nil {
+		log.Println("Error in execute template:", err.Error())
+		return
 	}
+
+	templateString = b.String()
+	return
 }
 
 

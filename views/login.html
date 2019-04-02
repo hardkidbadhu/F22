@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Feeds</title>
+</head>
+<body>
+
+
+<b>Login</b><br><br>
+<form method="post" action="${.authenticate}">
+    <input type="hidden" name="methodAction" value="login">
+    <table border="0">
+        <tr>
+            <td>username:</td>
+            <td><input type="text" name="un" size="20" autocorrect="off" spellcheck="false" autocapitalize="off" autofocus="true"></td>
+        </tr>
+        <tr>
+            <td>password:</td>
+            <td><input type="password" name="pw" size="20"></td>
+        </tr>
+    </table>
+    <br>
+    <input type="submit" value="login"><br><br>
+</form>
+    <a href="${.signUp}"> Sign up</a>
+</body>
+</html>

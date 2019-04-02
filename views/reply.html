@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li span {
+            display: block;
+            color: white;
+            text-align: right;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>News Application</title>
+</head>
+<body>
+<ul>
+    <li><a href="${.home}" target="_self">Home</a></li>
+    <li> <a href="${.newArticle}" target="_self">New Article</a></li>
+    <li><a href="${.login}" target="_self">login/sign up</a></li>
+    <li> <span>Hi ${.name} </span></li>
+</ul>
+
+<b>Add comment's to this article</b> <br>
+
+<form method="POST" action="${.url}">
+
+    ${.url}
+    <table border="0">
+        <tr>
+            <td>Title:</td>
+            <td style="padding: 14px 16px;font-family: 'Tibetan Machine Uni'">
+                ${.comment.CommentString}
+            </td>
+        </tr>
+        <tr>
+            <td>Your reply:</td>
+            <td><textarea type="text" name="message" rows="4" cols="50"></textarea></td>
+        </tr>
+    </table>
+    <br>
+    <input type="submit" value="post reply">
+</form>
+</body>
+</html>

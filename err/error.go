@@ -3,7 +3,7 @@ package err
 import "fmt"
 
 type UIError struct {
-	Err      error  `json:"error"`
+	Err        error  `json:"error"`
 	Message    string `json:"message"`
 	StatusCode int    `json:"status_code"`
 }

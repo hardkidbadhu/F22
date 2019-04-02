@@ -9,10 +9,17 @@ import (
 	"github.com/globalsign/mgo"
 )
 
+//defining the collection name as article
+const (
+	User     = `user`
+	Article  = `article`
+	Comments = `comments`
+)
+
 var (
 	// Obj defines the mongodb session, which connects mongodb instance.
-	Obj    *mgo.Session
-	once   sync.Once
+	Obj  *mgo.Session
+	once sync.Once
 )
 
 // ConnectDB connect to specified MongoDB instance.
@@ -27,12 +34,12 @@ func ConnectDB() {
 func connectLocalDB() *mgo.Session {
 
 	dialInfo := &mgo.DialInfo{
-		Addrs:          []string{"127.0.0.1:27017"},
-		Timeout:        30 * time.Second,
-		PoolLimit: 		10, // per node
-		MinPoolSize: 	50,
-		PoolTimeout: 	time.Minute * 10,
-		MaxIdleTimeMS: 	30000,
+		Addrs:         []string{"127.0.0.1:27017"},
+		Timeout:       30 * time.Second,
+		PoolLimit:     10, // per node
+		MinPoolSize:   50,
+		PoolTimeout:   time.Minute * 10,
+		MaxIdleTimeMS: 30000,
 	}
 	log.Printf("INFO: Mgo Dialinfo: %v\n", dialInfo)
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Feeds</title>
+</head>
+<body>
+
+
+<form method="post" action="${.authenticate}">
+
+    <b>Create Account</b><br><br>
+
+    <input type="hidden" name="methodAction" value="signUp">
+    <table border="0">
+        <tr>
+            <td>username:</td>
+            <td><input type="text" name="un" size="20" autocorrect="off" spellcheck="false" autocapitalize="off"></td>
+        </tr>
+        <tr>
+            <td>password:</td>
+            <td><input type="password" name="pw" size="20"></td>
+        </tr>
+        <tr>
+            <td>confirmPassword:</td>
+            <td><input type="password" name="cpw" size="20"></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="name" size="20"></td>
+        </tr>
+    </table>
+    <br>
+    <input type="submit" value="sign up">
+
+</form>
+</body>
+</html>

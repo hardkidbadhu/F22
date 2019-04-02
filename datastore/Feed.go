@@ -1,6 +1,7 @@
 package datastore
 
 import (
+	"F22/db"
 	"log"
 
 	"F22/config"
@@ -23,15 +24,15 @@ type articleStore struct {
 
 //Interface implementation
 //Can return articleStore as type services.Article coz it implements all the service interface methods
-func NewArticle(db *mgo.Session, cfg *config.Config) services.Article {
+func NewArticle(session *mgo.Session, cfg *config.Config) services.Article {
 	return &articleStore{
-		session:    db,
-		collection: db.DB(cfg.DatabaseName).C("article"),
+		session:    session,
+		collection: session.DB(cfg.DatabaseName).C(db.Article),
 		conf:       cfg,
 	}
 }
 
-func (as *articleStore) Find (userId bson.ObjectId) (*models.Article, error) {
+func (as *articleStore) Find(userId bson.ObjectId) (*models.Article, error) {
 	article := &models.Article{}
 	if err := as.collection.FindId(userId).One(&article); err != nil {
 		log.Printf("Error - Datastore - FindByID - %s", err.Error())
@@ -41,10 +42,10 @@ func (as *articleStore) Find (userId bson.ObjectId) (*models.Article, error) {
 	return article, nil
 }
 
-func (as *articleStore) List(id bson.ObjectId) ([]*models.Article, error) {
+func (as *articleStore) List(m bson.M) ([]models.Article, error) {
 
-	articles := []*models.Article{}
-	if err := as.collection.Find(bson.M{"author": id}).All(&articles); err != nil {
+	articles := []models.Article{}
+	if err := as.collection.Find(m).All(&articles); err != nil {
 		log.Printf("Error - Datastore - FindByID - %s", err.Error())
 		return nil, err
 	}
@@ -80,6 +81,36 @@ func (as *articleStore) Save(article models.Article) error {
 
 		if err != nil {
 			log.Printf("ERROR: Save(%s) - %q\n", article.Id, err)
+			return err
+		}
+	}
+
+	return nil
+
+}
+
+func (as *articleStore) Update(selector, updater bson.M) error {
+
+	err := as.collection.Update(selector, updater)
+	if err != nil {
+		log.Printf("ERROR: Update(%+v, %+v) - %q\n", selector, updater, err)
+		retry := as.conf.RetryDBInsert
+
+		for retry > 0 {
+			log.Printf("ERROR: Update(%+v, %+v) - %q\n", selector, updater, err)
+			if mgo.IsDup(err) {
+				break
+			}
+			if err.Error() == "EOF" {
+				as.session.Refresh()
+			}
+			if err = as.collection.Update(updater, selector); err == nil {
+				break
+			}
+			retry--
+		}
+		if err != nil {
+			log.Printf("ERROR: Update(%+v, %+v) - %q\n", selector, updater, err)
 			return err
 		}
 	}

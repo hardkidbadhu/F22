@@ -1,0 +1,12 @@
+{
+  "app_name": "F22App",
+  "dbName": "NewsApplication",
+  "http_address": "127.0.0.1",
+  "port": 9000,
+ "retry_db_insert": 3,
+  "retry_db_update": 3,
+  "delims_l":"${",
+  "delims_r" : "}",
+  "pageLimit": 10,
+  "endpoint": "http://127.0.0.1:9000"
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li span {
+            display: block;
+            color: darkred;
+            text-align: right;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>News Application</title>
+</head>
+<body>
+<ul>
+    <li><a href="${.home}" target="_self">Home</a></li>
+    <li> <a href="${.newArticle}" target="_self">New Article</a></li>
+    <li><a href="${.login}" target="_self">login/sign up</a></li>
+    <li> <span>Hi ${.name}! </span></li>
+</ul>
+
+<div style="padding: 4px 0;">
+    <table style="table-layout:fixed; width:100%;">
+        <thead>
+        <tr>
+            <th style="text-align:left;border-top: 1px dashed #000;border-bottom: 1px dashed;width:40%">
+                S.No
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:20%">
+                Title
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:15%">
+                Description
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:25%">
+                Author
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:25%">
+                Date
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:25%">
+                Likes
+            </th>
+            <th style="text-align:right;border-top: 1px dashed #000;border-bottom: 1px dashed;width:25%">
+                DisLikes
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        ${ range $index, $article := .articles}
+        <tr>
+            <td>
+                ${$index}
+            </td>
+            <td style="text-align:right;width:20%;word-break: break-all;">
+                <a href="${$article.RedirectUrl}" target="_blank">
+                ${$article.Title} </a>
+            </td>
+            <td style="text-align:right;width:20%;word-break: break-all;">${$article.Description}</td>
+            <td style="text-align:right;width:15%;word-break: break-all;">${$article.AuthorName}</td>
+            <td style="text-align:right;width:15%;word-break: break-all;">${$article.CreatedDateStr}</td>
+            <td style="text-align:right;width:15%;word-break: break-all;">${$article.Likes} <a href="${$article.UpVoteUrl}"> Click here to like :)</a>  </td>
+            <td style="text-align:right;width:15%;word-break: break-all;">${$article.DLikes} <a href="${$article.DownVoteUrl}"> Click here to dis like :(</a>  </td>
+        </tr>
+        ${end}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
